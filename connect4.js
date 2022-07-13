@@ -80,7 +80,7 @@ function placeInTable(y, x) {
   let td = document.getElementById(`${y}-${x}`);
   let piece = document.createElement("div");
 
-  piece.setAttribute("class","piece p1");
+  piece.setAttribute("class", `piece p${currPlayer}`);
   td.append(piece);
 
 }
@@ -95,10 +95,10 @@ function endGame(msg) {
 
 function handleClick(evt) {
   // get x from ID of clicked cell
-  var x = +evt.target.id;
+  let x = +evt.target.id;
 
   // get next spot in column (if none, ignore click)
-  var y = findSpotForCol(x);
+  let y = findSpotForCol(x);
   if (y === null) {
     return;
   }
@@ -113,10 +113,15 @@ function handleClick(evt) {
   }
 
   // check for tie
-  // TODO: check if all cells in board are filled; if so call, call endGame
+  if (board.every(row => row.every(piece=> piece))){
+    return endGame("Tie Game");
+
+  }
+
 
   // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  (currPlayer === 1) ? currPlayer = 2 : currPlayer = 1;
+
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
