@@ -18,14 +18,9 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
  */
 
 function makeBoard(width, height) {
-  let row = [];
 
-  for (let i = 0; i < width; i++) {
-    row.push(null);
-  }
-
-  for (let i = 0; i < height; i++) {
-    board.push(row);
+  for (let y = 0; y < height; y++) {
+    board.push(Array.from({length:width}));
   }
 
   return board;
@@ -82,7 +77,7 @@ function findSpotForCol(x) {
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
+
   let td = document.getElementById(`${y}-${x}`);
   let piece = document.createElement("div");
 
@@ -94,7 +89,7 @@ function placeInTable(y, x) {
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
+  alert(msg)
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -110,7 +105,7 @@ function handleClick(evt) {
   }
 
   // place piece in board and add to HTML table
-  // TODO: add line to update in-memory board
+  board[y][x] = currPlayer;
   placeInTable(y, x);
 
   // check for win
@@ -126,7 +121,8 @@ function handleClick(evt) {
 
 
   // switch players
-  (currPlayer === 1) ? currPlayer = 2 : currPlayer = 1;
+  // (currPlayer === 1) ? currPlayer = 2 : currPlayer = 1;
+  currPlayer = currPlayer === 1 ? 2 : 1;
 
 }
 
@@ -148,14 +144,11 @@ function checkForWin() {
         y >= 0 && y < HEIGHT && x >= 0 && x < WIDTH);
 
     if (legalCells.length === 4) {
+      let player = [];
       for (let [y, x] of legalCells) {
-        let piece = document.getElementById(`${y}-${x}`);
-        let count = 0;
-        if (piece.classList.contains(`p${currPlayer}`)) {
-          count++;
-        }
+        player.push(board[y][x])
       }
-      return count === 4;
+      return player.every(value => value === currPlayer);
     } else {
       return false;
     }
@@ -184,5 +177,5 @@ function checkForWin() {
   }
 }
 
-makeBoard();
+makeBoard(WIDTH, HEIGHT);
 makeHtmlBoard();
