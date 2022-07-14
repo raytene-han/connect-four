@@ -141,7 +141,8 @@ function checkForWin() {
    */
   function _win(cells) {
 
-    // player
+    // filters out cells not within game board dimensions
+    // iterates over legalCells to check if all cells match current player
 
     let legalCells = cells.filter(([y, x]) =>
         y >= 0 && y < HEIGHT && x >= 0 && x < WIDTH);
@@ -149,15 +150,12 @@ function checkForWin() {
     if (legalCells.length === 4) {
       for (let [y, x] of legalCells) {
         let piece = document.getElementById(`${y}-${x}`);
-        let p1Count = 0;
-        let p2Count = 0;
-        if (piece.classList.contains("p1")) {
-          p1Count++;
-        } else if (piece.classList.contains("p2")) {
-          p2Count++;
+        let count = 0;
+        if (piece.classList.contains(`p${currPlayer}`)) {
+          count++;
         }
       }
-      return (p1Count === 4 || p2Count === 4);
+      return count === 4;
     } else {
       return false;
     }
